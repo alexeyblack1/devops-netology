@@ -1,21 +1,8 @@
 # devops-netology
-new line
 
-все файлы в локальных директориях .terraform/ любого уровня вложенности ;
 
-все файлы с расширением tfstate;
-все файлы в имени которых встречается .tfstate.;
+bitbucket :      https://alexeyblack1@bitbucket.org/alexeyblack1/devops-netology.git
 
-Файл crach .log;
+      githab :      https://github.com/alexeyblack1/devops-netology.git 
 
-Все файлы с расширением tfvars;
-
-Файлы override.tf и override.tf.json;
-
-Все файлы оканчивающиеся на 
-_override.tf
-_override.tf.json
-
-Два конфигурационных файла
-.terraformrc
-terraform.rc
+      gitlab:       https://gitlab.com/alexeyblack1/devops-netology.git   	

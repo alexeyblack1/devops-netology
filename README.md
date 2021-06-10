@@ -6,20 +6,20 @@ type -t cd
 builtin
 
 Команда cd - встроенная. Могла бы быть и файлом, как , например "cp", но отдельного файла нет:
-vagrant@vagrant:~$ type -a cd
+vagrant@vagrant:$ type -a cd
 cd is a shell builtin 
 
 2. Какая альтернатива без pipe команде grep <some_string> <some_file> | wc -l? 
 
-vagrant@vagrant:'''~$ grep History .viminfo | wc -l
+vagrant@vagrant:$ grep History .viminfo | wc -l
 6
 Альтернатива: 
-vagrant@vagrant:'''~$ grep -c History .viminfo
+vagrant@vagrant:$ grep -c History .viminfo
 6
 
 3. Какой процесс с PID 1 является родителем для всех процессов в вашей виртуальной машине Ubuntu 20.04?
 
-vagrant@vagrant:~$ pstree -g -A
+vagrant@vagrant:$ pstree -g -A
 systemd(1)-+-VBoxService(786)-+-{VBoxService}(786)
            |                  |-{VBoxService}(786)
            |                  |-{VBoxService}(786)
@@ -37,14 +37,14 @@ systemd(1)-+-VBoxService(786)-+-{VBoxService}(786)
 
 4. Как будет выглядеть команда, которая перенаправит вывод stderr ls на другую сессию терминала?
 
-vagrant@vagrant:'''~$ ls 2>/dev/pts/1
+vagrant@vagrant:$ ls 2>/dev/pts/1
 
 5. Получится ли одновременно передать команде файл на stdin и вывести ее stdout в другой файл? Приведите работающий пример.
 Да. Пример передачи команде cat на вход file1 и запись stdout в file2
 
-vagrant@vagrant:'''~$ cat file01
+vagrant@vagrant:$ cat file01
 001
-vagrant@vagrant:'''~$ cat file02
+vagrant@vagrant:$ cat file02
 
 vagrant@vagrant:$ cat < file01 > file02
 vagrant@vagrant:$ cat file02
@@ -72,7 +72,7 @@ Hello отобразится в терминале 1 (если он запуще
 
 Получится. Меняем  местами stdout и stderr. Команда bash 3>&1 1>&2 2>&3 запустит bash в котором дескрипторы stdout и stderr будут поменяны местами через промежуточный дескриптор 3 и  в stdin через pipe будет передаваться уже stderr. 
 Пример команды ls без вывода в консоль,  с выводом stderr в файл через pipe:
-vagrant@vagrant:'''$ ls -J 3>&1 1>&2 2>&3 | tee -p file1 > /dev/null'''
+vagrant@vagrant:$ ls -J 3>&1 1>&2 2>&3 | tee -p file1 > /dev/null'''
 vagrant@vagrant:~ cat file1
 ls: invalid option -- 'J'
 Try 'ls --help' for more information.

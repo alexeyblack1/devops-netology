@@ -1,37 +1,71 @@
-                                      Домашнее задание к занятию "3.4. Операционные системы, лекция 2"
+                                     Домашнее задание к занятию "3.4. Операционные системы, лекция 2" -доработка пунктов 1,2
 1.**На лекции мы познакомились с node_exporter. В демонстрации его исполняемый файл запускался в background. Этого достаточно для демо, но не для настоящей production-системы, где процессы должны находиться под внешним управлением. Используя знания из лекции по systemd, создайте самостоятельно простой unit-файл для node_exporter:
 поместите его в автозагрузку,
 предусмотрите возможность добавления опций к запускаемому процессу через внешний файл (посмотрите, например, на systemctl cat cron),
 удостоверьтесь, что с помощью systemctl процесс корректно стартует, завершается, а после перезагрузки автоматически поднимается.**
-vagrant@vagrant:$ cd /tmp
+
+```
+vagrant@vagrant:~$ cd /tmp
 vagrant@vagrant:/tmp$ curl -LO https://github.com/prometheus/node_exporter/releases/download/v1.1.2/node_exporter-1.1.2.linux-amd64.tar.gz
 vagrant@vagrant:/tmp$ sudo nano /etc/systemd/system/node_exporter.service
+
 [Unit]
-Description=Node Exporter
-After=network.target
+   Description=Node Exporter
+   After=network.target
+
 [Service]
-User=node_exporter
-Group=node_exporter
-Type=simple
-ExecStart=/usr/local/bin/node_exporter
+   User=node_exporter
+   Group=node_exporter
+   Type=simple
+   ExecStart=/usr/local/bin/node_exporter
+
+
 [Install]
-WantedBy=multi-user.target
-После добавления в автозагрузку и проверки статуса - вот так:
-vagrant@vagrant:$ sudo systemctl status node_exporter
+   WantedBy=multi-user.target
+
+После добавления в автозагрузку и проверки статуса 
+sudo systemctl daemon-reload
+sudo systemctl enable node_exporter
+sudo systemctl start node_exporter
+vagrant@vagrant:~$ sudo systemctl status node_exporter
 ? node_exporter.service - Node Exporter
-Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor preset: enabled)
-Active: failed (Result: exit-code) since Tue 2021-06-22 18:21:00 UTC; 9min ago
-Process: 658 ExecStart=/usr/local/bin/node_exporter (code=exited, status=217/USER)
-Main PID: 658 (code=exited, status=217/USER)
-Jun 22 18:21:00 vagrant systemd[1]: Started Node Exporter.
-Jun 22 18:21:00 vagrant systemd[658]: node_exporter.service: Failed to determine user credentials: No such process
-Jun 22 18:21:00 vagrant systemd[658]: node_exporter.service: Failed at step USER spawning /usr/local/bin/node_exporter:
-Jun 22 18:21:00 vagrant systemd[1]: node_exporter.service: Main process exited, code=exited, status=217/USER
-Jun 22 18:21:00 vagrant systemd[1]: node_exporter.service: Failed with result 'exit-code'.
+     Loaded: loaded (/etc/systemd/system/node_exporter.service; enabled; vendor preset: enabled)
+     Active: active (running) since Thu 2021-07-15 13:44:32 UTC; 5min ago
+   Main PID: 1527 (node_exporter)
+      Tasks: 4 (limit: 1072)
+     Memory: 4.5M
+     CGroup: /system.slice/node_exporter.service
+             └─1527 /usr/local/bin/node_exporter
+...caller=node_exporter.go:195 msg="Listening on" address=:9100 
+```
 
-**Ознакомьтесь с опциями node_exporter и выводом /metrics по-умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.**
 
-Не получается выполнить первый пункт задания.
+
+**2. Ознакомьтесь с опциями node_exporter и выводом /metrics по-умолчанию. Приведите несколько опций, которые вы бы выбрали для базового мониторинга хоста по CPU, памяти, диску и сети.**
+
+```
+По умолчанию вывод /metrics
+curl http://localhost:9100/metrics
+
+node_pressure_memory_stalled_seconds_total 0
+# HELP node_pressure_memory_waiting_seconds_total Total time in seconds that processes have waited for memory
+# TYPE node_pressure_memory_waiting_seconds_total counter
+node_pressure_memory_waiting_seconds_total 0
+# HELP node_procs_blocked Number of processes blocked waiting for I/O to complete.
+# TYPE node_procs_blocked gauge
+node_procs_blocked 0
+# HELP node_procs_running Number of processes in runnable state.
+# TYPE node_procs_running gauge
+node_procs_running 3
+# HELP node_schedstat_running_seconds_total Number of seconds CPU spent running a process.
+# TYPE node_schedstat_running_seconds_total counter
+
+для базового мониторинга хоста по CPU, памяти, диску и сети можно выбрать опции
+
+collector.cpu,  collector.meminfo, сollector.diskstats, collector.netstat.
+```
+
+
 
 **Установите в свою виртуальную машину Netdata. Воспользуйтесь готовыми пакетами для установки (sudo apt install -y netdata). После успешной установки:
 в конфигурационном файле /etc/netdata/netdata.conf в секции [web] замените значение с localhost на bind to = 0.0.0.0,

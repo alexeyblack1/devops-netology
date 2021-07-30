@@ -96,30 +96,31 @@ LISTEN 0      4096            [::]:sunrpc          [::]:*      users:(("rpcbind"
 LISTEN 0      128             [::]:ssh             [::]:*      users:(("sshd",pid=829,fd=4))
 
 ```
-В режиме прослушивания находится 6 портов. Они принадлежат процессам *systemd*, *sshd*, и "node_exporter".
+В режиме прослушивания находится 6 портов. Они принадлежат процессам systemd, sshd,  node_exporter, rpcbind .
 
 **13.Какой ключ нужно добавить в tcpdump, чтобы он начал выводить не только заголовки, но и содержимое фреймов в текстовом виде? А в текстовом и шестнадцатиричном?**
 
 С ключом -A `tcpdump` будет выводить данные в текстовом виде. 
 
 ```
-vagrant@vagrant:~$ sudo tcpdump -A -c 1
+vagrant@vagrant:~/devops-netology$ sudo tcpdump -A -c 1
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
-12:40:47.838306 IP vagrant.ssh > _gateway.57067: Flags [P.], seq 1200921947:1200922071, ack 3927911, win 62780, length 1
-24
-E.....@.@...
+15:36:33.337690 IP vagrant.ssh > _gateway.62009: Flags [P.], seq 1364712446:1364712482, ack 19093131, win 62780, length
+36
+E..L.^@.@.j-
 ...
-.......G..[.;.gP..<...........W..k...6.e.......7..iP1.8eG.VYU...W........w...1To/....:.....,.....K...(3X.^AC<-x......J..
-1.R....J..m......t.A.=....0
+......9QW...#V.P..<.O..z.t.H.^.c...u<....OD8...s.L...E....%
 1 packet captured
-10 packets received by filter
+11 packets received by filter
 0 packets dropped by kernel
 ```
 
 
 **14.Попробуйте собрать дамп трафика с помощью tcpdump на основном интерфейсе вашей виртуальной машины и посмотреть его через tshark или Wireshark (можно ограничить число пакетов -c 100). Встретились ли вам какие-то установленные флаги Internet Protocol (не флаги TCP, а флаги IP)? Узнайте, какие флаги бывают. Как на самом деле называется стандарт Ethernet, фреймы которого попали в ваш дамп? Можно ли где-то в дампе увидеть OUI?**
 
+Ограничим число пакетов 50-ю.
+```
 vagrant@vagrant:~/devops-netology$ sudo tcpdump -i eth0 -c 50 -w tcpdump.pcap
 tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
 50 packets captured
@@ -127,3 +128,4 @@ tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 byt
 0 packets dropped by kernel
 
 sudo tshark -r tcpdump.pcap
+```

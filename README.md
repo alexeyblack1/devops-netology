@@ -140,7 +140,7 @@ Internet Protocol Version 4, Src: 10.0.2.15, Dst: 10.0.2.2
  ```
  Флаг Don't fragment запрещает разбивку пакета на фрагменты.
    
-   Стандарт Ethernet называется Ethernet II и в дампе можно увидеть OUI в заголовке пакета в секции Destination:
+   Стандарт Ethernet называется Ethernet II и в дампе можно увидеть OUI уникальный идентификатор организации  (vendor Realtek) в заголовке пакета в секции Destination:
    ```
    Ethernet II, Src: PcsCompu_e3:90:c5 (08:00:27:e3:90:c5), Dst: RealtekU_12:35:02 (52:54:00:12:35:02)
     Destination: RealtekU_12:35:02 (52:54:00:12:35:02)

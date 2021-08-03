@@ -126,20 +126,24 @@ tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 byt
 50 packets captured
 50 packets received by filter
 0 packets dropped by kernel
+```
+Посмотрев файл дампа wireshark ом
+видим, что встречаются флаги IP
 
-sudo tshark -r tcpdump.pcap
 ```
-```
-vagrant@vagrant:~$ sudo tcpdump -r tcpdump.pcap
-reading from file tcpdump.pcap, link-type EN10MB (Ethernet)
-12:14:03.218332 IP vagrant.ssh > _gateway.63722: Flags [P.], seq 3547826712:3547826748, ack 5000403, win 62780, length 3
-6
-12:14:03.218393 IP vagrant.ssh > _gateway.63722: Flags [P.], seq 36:112, ack 1, win 62780, length 76
-12:14:03.218449 IP vagrant.ssh > _gateway.63722: Flags [P.], seq 112:148, ack 1, win 62780, length 36
-12:14:03.218586 IP _gateway.63722 > vagrant.ssh: Flags [.], ack 36, win 65535, length 0
-12:14:03.218586 IP _gateway.63722 > vagrant.ssh: Flags [.], ack 112, win 65535, length 0
-12:14:03.218586 IP _gateway.63722 > vagrant.ssh: Flags [.], ack 148, win 65535, length 0
-12:14:22.448781 IP _gateway.52118 > vagrant.ssh: Flags [S], seq 22080001, win 65535, options [mss 1460], length 0
-12:14:22.448808 IP vagrant.ssh > _gateway.52118: Flags [S.], seq 822955223, ack 22080002, win 64240, options [mss 1460],
- length 0
+Internet Protocol Version 4, Src: 10.0.2.15, Dst: 10.0.2.2
+    ...
+   Flags: 0x40, Don't fragment
+        0... .... = Reserved bit: Not set
+        .1.. .... = Don't fragment: Set
+        ..0. .... = More fragments: Not set
  ```
+ Флаг Don't fragment запрещает разбивку пакета на фрагменты.
+   
+   Стандарт Ethernet называется Ethernet II и в дампе можно увидеть OUI в заголовке пакета в секции Destination:
+   ```
+   Ethernet II, Src: PcsCompu_e3:90:c5 (08:00:27:e3:90:c5), Dst: RealtekU_12:35:02 (52:54:00:12:35:02)
+    Destination: RealtekU_12:35:02 (52:54:00:12:35:02)
+        Address: RealtekU_12:35:02 (52:54:00:12:35:02)
+        
+   ```

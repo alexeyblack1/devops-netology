@@ -129,3 +129,17 @@ tcpdump: listening on eth0, link-type EN10MB (Ethernet), capture size 262144 byt
 
 sudo tshark -r tcpdump.pcap
 ```
+```
+vagrant@vagrant:~$ sudo tcpdump -r tcpdump.pcap
+reading from file tcpdump.pcap, link-type EN10MB (Ethernet)
+12:14:03.218332 IP vagrant.ssh > _gateway.63722: Flags [P.], seq 3547826712:3547826748, ack 5000403, win 62780, length 3
+6
+12:14:03.218393 IP vagrant.ssh > _gateway.63722: Flags [P.], seq 36:112, ack 1, win 62780, length 76
+12:14:03.218449 IP vagrant.ssh > _gateway.63722: Flags [P.], seq 112:148, ack 1, win 62780, length 36
+12:14:03.218586 IP _gateway.63722 > vagrant.ssh: Flags [.], ack 36, win 65535, length 0
+12:14:03.218586 IP _gateway.63722 > vagrant.ssh: Flags [.], ack 112, win 65535, length 0
+12:14:03.218586 IP _gateway.63722 > vagrant.ssh: Flags [.], ack 148, win 65535, length 0
+12:14:22.448781 IP _gateway.52118 > vagrant.ssh: Flags [S], seq 22080001, win 65535, options [mss 1460], length 0
+12:14:22.448808 IP vagrant.ssh > _gateway.52118: Flags [S.], seq 822955223, ack 22080002, win 64240, options [mss 1460],
+ length 0
+ ```
